@@ -25,12 +25,32 @@ namespace N_TaskManager
             {
                 try
                 {
-                    dataGridView1.Rows.Add(p.ProcessName, p.Id, p.MainModule.FileName, p.TotalProcessorTime, p.WorkingSet64);
+                    var responding = "";
+                    if (!p.Responding)
+                    {
+                        responding = "応答なし";
+                    }
+                    dataGridView1.Rows.Add(p.ProcessName, p.Id, p.MainModule.FileName, p.TotalProcessorTime, p.WorkingSet64, responding);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process[] ps = System.Diagnostics.Process.GetProcessesByName(textBox1.Text);
+                foreach (System.Diagnostics.Process p in ps)
+                {
+                    p.Kill();
+                }
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
     }
